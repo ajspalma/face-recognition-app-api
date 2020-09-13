@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt-nodejs');
 
 const app = express();
 
@@ -23,6 +24,13 @@ const database = {
             entries: 0,
             joined: new Date()
         }
+    ],
+    login: [
+        {
+            id: '987',
+            hash: '',
+            email: 'john@gmail.com'
+        }
     ]
 };
 
@@ -32,6 +40,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/signin', (req, res) => {
+    const hash = '$2a$10$rvRQPhycz.c7yKO0WbQgnuIOu8m3PdoWujvFG8q.TV6cDYOBpXdju';
+    bcrypt.compare("bananas", hash, (err, res) => {
+        console.log('first guess', res);
+    });
     if (req.body.email === database.users[0].email && req.body.password === database.users[0].password) {
         res.json('success');
     } else { 
@@ -41,6 +53,9 @@ app.post('/signin', (req, res) => {
 
 app.post('/register', (req, res) => {
     const { email, name, password } = req.body;
+    bcrypt.hash(password, null, null, (err, hash) => {
+        console.log(hash);
+    });
     database.users.push({
         id: '125',
         name,
@@ -80,6 +95,14 @@ app.put('/image', (req, res) => {
         res.status(404).json("not found");
     }
 });
+/* 
+// Load hash from your password DB.
+bcrypt.compare("bacon", hash, function(err, res) {
+    // res == true
+});
+bcrypt.compare("veggies", hash, function(err, res) {
+    // res = false
+}); */
  
 app.listen(4000, () => {
     console.log('app is running on port 4000');
