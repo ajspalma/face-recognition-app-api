@@ -11,6 +11,7 @@ const image = require('./controllers/image');
 const db = knex({
     client: 'pg',
     connection: process.env.DATABASE_URL
+    // Reference: https://stackoverflow.com/questions/54809302/heroku-cant-connect-with-postgres-db-knex-express
 });
 
 const app = express();
