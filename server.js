@@ -25,6 +25,9 @@ app.use(cors());
 
 app.get('/', (req, res) => { res.send('this is working'); });
 
+// using advance function (call function (db, bcyrpt) that returns another function which calls(req, res))
+// app.post('/signin', signin.handleSignin(db, bcrypt)(req, res));
+// const handleSingin = (db, bcrypt) => (req, res) => {} 
 app.post('/signin', (req, res) => { signin.handleSignin(req, res, db, bcrypt); });
 
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt); });
