@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex')
 
-const postgres = knex({
+const db = knex({
     client: 'pg',
     connection: {
       host : '127.0.0.1',
@@ -13,8 +13,6 @@ const postgres = knex({
       database : 'face-recognition-app'
     }
 });
-
-console.log(postgres.select('*').from('users'));
 
 const app = express();
 
@@ -71,13 +69,12 @@ app.post('/register', (req, res) => {
     bcrypt.hash(password, null, null, (err, hash) => {
         console.log(hash);
     });
-    database.users.push({
-        id: '125',
-        name,
+    db('users').insert({
         email,
-        entries: 0,
+        name,
         joined: new Date()
-    });
+    })
+    .then(console.log);
     res.json(database.users[database.users.length-1]);
 });
 
